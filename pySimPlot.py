@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 
 import argparse
-import os
+
 
 my_parser = argparse.ArgumentParser(description='pySimPlot')
 
@@ -57,15 +57,23 @@ step           = args.s
 verbose        = args.v
 includegaps    = args.gaps
 
-# Validate inputs
-assert(os.path.exists(inputAlignment)), "Can't open input file"
 
+
+
+def startup():
+    import sys
+    if sys.version_info[0] < 3:
+        raise Exception("Must be using Python 3")
 
 
 
 class fasta:
     def __init__(self, file):
         global args
+
+        # Validate inputs
+        import os
+        assert(os.path.exists(file)), "Can't open input file"
 
         with open(file, "r") as file:
             header = ""
@@ -276,6 +284,7 @@ def csvExport(sequences, outputFile):
 
 
 
+startup()
 
 # Process input alignment (Fasta Formatted)
 sequences = fasta(inputAlignment)
