@@ -18,3 +18,5 @@ An example alignment is provided. To run using this example type the following. 
 ```bash
 ./pySimPlot.py -i example.ali -o plot.csv -v
 ```
+
+The first sequence provided in the alignment file is currently used as the reference sequence.
