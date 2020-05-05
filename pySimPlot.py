@@ -130,7 +130,10 @@ class Pointer:
 
 
 
-def compare(sequenceA, sequenceB, includegaps):
+def compare(sequenceA, sequenceB):
+    global args
+    includegaps = args.i
+
     length = len(sequenceA)
 
     # Initiate counters
@@ -172,7 +175,7 @@ def extract(pointer, sequence):
     return windowed_sequence
 
 
-def main(seqA, seqB, verbose, includegaps):
+def main(seqA, seqB, verbose):
     sequenceA = seqA["Sequence"]
     sequenceB = seqB["Sequence"]
 
@@ -196,7 +199,7 @@ def main(seqA, seqB, verbose, includegaps):
         compareB = extract(pointer, sequenceB)
 
         # Compare the sequences and get the % identity
-        identity = compare(compareA, compareB, includegaps)
+        identity = compare(compareA, compareB)
 
 
         # Verbose output
@@ -257,7 +260,7 @@ referenceSequence = sequences.seqs[0]
 
 # Run the comparison of each seq to the reference
 for x in range(1, noOfSequences):
-    main(referenceSequence,sequences.seqs[x], verbose, includegaps)
+    main(referenceSequence,sequences.seqs[x], verbose)
 
 # Export everything to CSV
 csvExport(sequences, outputFile)
