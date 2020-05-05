@@ -9,6 +9,8 @@ pySimPlot takes an alignment of two or more sequences (nucleotide or amino acid)
 
 Download the script either directly or by cloning this Git repo. Run using -h for a list of all available options.
 
+*Requires Python3 (See [https://installpython3.com](https://installpython3.com))*
+
 ```bash
 ./pySimPlot.py -h
 ```
