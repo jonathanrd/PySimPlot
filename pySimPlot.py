@@ -85,6 +85,9 @@ class fasta:
                 line = file.readline()
             self.seqs.append({"Name": header[1:], "Sequence": seq})
 
+        # Ensure more than one sequence is provided
+        assert (self.count() > 1), "Less than two sequences provided"
+
         # If args.r[eference] is specified, changeReference
         reference = args.r
         if (reference):
