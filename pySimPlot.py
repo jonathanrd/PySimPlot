@@ -90,6 +90,17 @@ class fasta:
         if (reference):
             self.changeReference(reference)
 
+        # Check all parsed sequences are of the same length
+        self.checkSequenceLength()
+
+    def checkSequenceLength(self):
+        # Length of first sequence
+        referencelength = len(self.seqs[0]["Sequence"])
+
+        # True if all sequences are same length as reference seq
+        samelength = all(len(d['Sequence']) == referencelength for d in self.seqs)
+        assert(samelength), "Input sequence lengths do not match"
+
     def count(self):
         return len(self.seqs)
 
@@ -266,6 +277,8 @@ def csvExport(sequences, outputFile):
 # Process input alignment (Fasta Formatted)
 sequences = fasta(inputAlignment)
 
+sequences.checkSequenceLength()
+
 # How many sequences were we given?
 noOfSequences  = len(sequences.seqs)
 
@@ -273,8 +286,8 @@ noOfSequences  = len(sequences.seqs)
 referenceSequence = sequences.seqs[0]
 
 # Run the comparison of each seq to the reference
-for x in range(1, noOfSequences):
-    main(referenceSequence,sequences.seqs[x], verbose)
+#for x in range(1, noOfSequences):
+#    main(referenceSequence,sequences.seqs[x], verbose)
 
 # Export everything to CSV
-csvExport(sequences, outputFile)
+#csvExport(sequences, outputFile)
