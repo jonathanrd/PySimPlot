@@ -29,6 +29,13 @@ my_parser.add_argument('-s',
                        default=1,
                        help='step size')
 
+my_parser.add_argument('-r',
+                       metavar="REFERENCE",
+                       type=str,
+                       default=False,
+                       help='Select a new reference sequence by name.')
+
+
 my_parser.add_argument('--gaps',
                        action='store_true',
                        default=False,
@@ -58,6 +65,7 @@ assert(os.path.exists(inputAlignment)), "Can't open input file"
 
 class fasta:
     def __init__(self, file):
+        global args
 
         with open(file, "r") as file:
             header = ""
@@ -76,6 +84,11 @@ class fasta:
                     seq = seq + line
                 line = file.readline()
             self.seqs.append({"Name": header[1:], "Sequence": seq})
+
+        # If args.r[eference] is specified, changeReference
+        reference = args.r
+        if (reference):
+            self.changeReference(reference)
 
     def count(self):
         return len(self.seqs)
