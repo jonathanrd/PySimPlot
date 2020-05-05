@@ -80,6 +80,17 @@ class fasta:
     def count(self):
         return len(self.seqs)
 
+    def changeReference(self, name):
+        # Choose a new reference and add it to top of list.
+
+        # Find the index from a list of dicts
+        index = next((index for (index, d) in enumerate(self.seqs) if d["Name"] == name), None)
+
+        # Check that an index number was returned
+        assert(isinstance(index, int)), "Selected reference does not exist"
+
+        # Pop the old dict from list and reinsert it at the top
+        self.seqs.insert(0, self.seqs.pop(index))
 
 
 
