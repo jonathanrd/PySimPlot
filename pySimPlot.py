@@ -286,8 +286,8 @@ noOfSequences  = len(sequences.seqs)
 referenceSequence = sequences.seqs[0]
 
 # Run the comparison of each seq to the reference
-#for x in range(1, noOfSequences):
-#    main(referenceSequence,sequences.seqs[x], verbose)
+for x in range(1, noOfSequences):
+    main(referenceSequence,sequences.seqs[x], verbose)
 
 # Export everything to CSV
-#csvExport(sequences, outputFile)
+csvExport(sequences, outputFile)
