@@ -108,7 +108,7 @@ class Pointer:
     # Read the current parameters and set values
     def calculate(self):
         self.window_lower = self.step * self.iteration
-        self.window_upper = self.window - 1 + self.step * self.iteration
+        self.window_upper = self.window + self.step * self.iteration
 
         # Is the window size odd or even? Set correct pointer location
         if (self.window % 2) == 0:
@@ -132,7 +132,7 @@ class Pointer:
 
 def compare(sequenceA, sequenceB):
     global args
-    includegaps = args.i
+    includegaps = args.gaps
 
     length = len(sequenceA)
 
@@ -204,6 +204,7 @@ def main(seqA, seqB, verbose):
 
         # Verbose output
         if (verbose):
+            print("Window: ",pointer.window_lower,pointer.window_upper)
             print("A: ",compareA)
             print("B: ",compareB)
             print("Identity: ",round(identity,2),"\n")
