@@ -96,13 +96,18 @@ class fasta:
         # Ensure more than one sequence is provided
         assert (self.count() > 1), "Less than two sequences provided"
 
+        # Check all parsed sequences are of the same length
+        self.checkSequenceLength()
+
         # If args.r[eference] is specified, changeReference
         reference = args.r
         if (reference):
             self.changeReference(reference)
 
-        # Check all parsed sequences are of the same length
-        self.checkSequenceLength()
+        # Trim the reference
+        self.setReferenceStartEnd()
+
+
 
     def checkSequenceLength(self):
         # Length of first sequence
@@ -128,28 +133,46 @@ class fasta:
         self.seqs.insert(0, self.seqs.pop(index))
 
 
+    def setReferenceStartEnd(self):
+
+        # Remove all trailing "-" from reference
+        # We should also do this from the start but more of a challenge
+        startLength        = len(self.seqs[0]["Sequence"])
+        trimmedReferenceL  = len(self.seqs[0]["Sequence"].lstrip("-"))
+        trimmedReferenceLR = len(self.seqs[0]["Sequence"].lstrip("-").rstrip("-"))
+
+        start = startLength-trimmedReferenceL
+        end = trimmedReferenceLR
+
+        print(startLength)
+        print(trimmedReferenceL)
+        print(trimmedReferenceLR)
+
+        self.seqs[0]["SeqStart"] = start
+        self.seqs[0]["SeqEnd"]   = end
 
 
 
 class Pointer:
 
     # Set all initial values using calculate() on load
-    def __init__(self, window, step):
+    def __init__(self, window, step, offset = 0):
         self.window = window
         self.step = step
         self.iteration = 0
+        self.offset = offset
         self.calculate()
 
     # Read the current parameters and set values
     def calculate(self):
-        self.window_lower = self.step * self.iteration
-        self.window_upper = self.window + self.step * self.iteration
+        self.window_lower = self.step * self.iteration + self.offset
+        self.window_upper = self.window + self.step * self.iteration  + self.offset
 
         # Is the window size odd or even? Set correct pointer location
         if (self.window % 2) == 0:
-            self.pointer = int((self.window / 2) - 1 + self.step * self.iteration)
+            self.pointer = int((self.window / 2) - 1 + self.step * self.iteration) + self.offset
         else:
-            self.pointer = int((self.window - 1) / 2 + self.step * self.iteration)
+            self.pointer = int((self.window - 1) / 2 + self.step * self.iteration) + self.offset
 
     # Increase the iteration count and recalculate all values
     def increment(self):
@@ -212,6 +235,14 @@ def extract(pointer, sequence):
 
 def main(seqA, seqB, verbose):
     sequenceA = seqA["Sequence"]
+    offset = seqA["SeqStart"]
+
+    # Remove gaps from end of reference sequence!
+    #print (len(sequenceA))
+    #sequenceA = sequenceA.rstrip("-")
+    #print (len(sequenceA))
+
+
     sequenceB = seqB["Sequence"]
 
     # Verbose output
@@ -223,11 +254,11 @@ def main(seqA, seqB, verbose):
     combined_identities = {}
 
     # Initiate the pointer class
-    pointer = Pointer(window,step)
+    pointer = Pointer(window, step, offset)
 
     # Iterate through the sequences
     # but stop when the window goes past the last base/residue
-    while pointer.window_upper <= len(sequenceA):
+    while pointer.window_upper <= seqA["SeqEnd"]:
 
         # Extract the part each sequence to compare
         compareA = extract(pointer, sequenceA)
@@ -288,8 +319,6 @@ startup()
 
 # Process input alignment (Fasta Formatted)
 sequences = fasta(inputAlignment)
-
-sequences.checkSequenceLength()
 
 # How many sequences were we given?
 noOfSequences  = len(sequences.seqs)
