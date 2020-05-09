@@ -144,10 +144,6 @@ class fasta:
         start = startLength-trimmedReferenceL
         end = trimmedReferenceLR
 
-        print(startLength)
-        print(trimmedReferenceL)
-        print(trimmedReferenceLR)
-
         self.seqs[0]["SeqStart"] = start
         self.seqs[0]["SeqEnd"]   = end
 
