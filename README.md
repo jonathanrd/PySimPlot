@@ -1,24 +1,14 @@
-# pySimPlot
+PySimPlot
+=========
 
-pySimPlot takes an alignment of two or more sequences (nucleotide or amino acid) in fasta format and then calculates the % identity between them within a rolling window. The resulting data are returned in csv format for you to format with Excel etc.
+PySimPlot takes an alignment of two or more sequences (nucleotide or amino acid) in fasta format and then calculates the identity between them within a rolling window. The resulting data are returned plotted and optionally saved as a csv file for you to format with Excel etc.
 
-[See the blog post for details!](https://jonathanrd.com/20-05-02-writing-a-simplot-clone-in-python/)
+This software is inspired by [SimPlot](https://sray.med.som.jhmi.edu/SCRoftware/SimPlot/) from Stuart Ray.
+
+Example Usage:
+
+    clustalo -i sequences.fasta -o aligned.fasta
+    pysimplot -i aligned.fasta -o data.csv
 
 
-## Usage
-
-Download the script either directly or by cloning this Git repo. Run using -h for a list of all available options.
-
-*Requires Python3 (See [https://installpython3.com](https://installpython3.com))*
-
-```bash
-./pySimPlot.py -h
-```
-
-An example alignment is provided. To run using this example type the following. Note: the -v flag is useful to double check that everything is running as it should.
-
-```bash
-./pySimPlot.py -i example.ali -o plot.csv -v
-```
-
-The first sequence provided in the alignment file is currently used as the reference sequence.
+![Example similarity plot](https://jonathanrd.com/public/screenshot.png)
